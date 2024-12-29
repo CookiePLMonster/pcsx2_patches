@@ -17,7 +17,7 @@ jobs:
       - name: Upload archives
         uses: actions/upload-artifact@v4
         with:
-          name: cheats
+          name: patches
           path: ./patches.zip
           if-no-files-found: error
 
@@ -29,7 +29,7 @@ jobs:
             github.rest.git.updateRef({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              ref: 'refs/tags/latest',
+              ref: 'tags/latest',
               sha: context.sha,
               force: true
             })
@@ -39,7 +39,9 @@ jobs:
         if: github.ref == 'refs/heads/main'
         with:
           make_latest: true
+          generate_release_notes: true
           tag_name: latest
           fail_on_unmatched_files: true
           name: Latest Build
+          body: Test
           files: ./patches.zip
